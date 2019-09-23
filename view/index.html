@@ -1,0 +1,154 @@
+﻿<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>index</title>
+
+    <link href="../css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../css/jquery.orgchart.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div id="chart-container" style="border:1px solid black;"></div>
+
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <script src="../js/jquery.orgchart.js"></script>
+    <script src="../js/html2canvas.min.js"></script>
+
+    <script>
+        var datascource = {
+            id: '1',
+            name: 'Lao Lao',
+            title: 'general manager',
+            children: [
+                {
+                    id: '2',
+                    name: 'Bo Miao',
+                    title: 'department manager'
+                },
+                {
+                    id: '3',
+                    name: 'Su Miao',
+                    title: 'department manager',
+                    children: [
+                        {
+                            id: '4',
+                            name: 'Tie Hua',
+                            title: 'senior engineer'
+                        },
+                        {
+                            id: '5',
+                            name: 'Hei Hei',
+                            title: 'senior engineer',
+                            children: [
+                                {
+                                    id: '6',
+                                    name: 'Pang Pang',
+                                    title: 'engineer'
+                                },
+                                {
+                                    id: '7',
+                                    name: 'Xiang Xiang',
+                                    title: 'UE engineer'
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: '8',
+                    name: 'Yu Jie',
+                    title: 'department manager'
+                },
+                {
+                    id: '9',
+                    name: 'Yu Li',
+                    title: 'department manager'
+                },
+                {
+                    id: '10',
+                    name: 'Hong Miao',
+                    title: 'department manager'
+                },
+                {
+                    id: '11',
+                    name: 'Yu Wei',
+                    title: 'department manager'
+                },
+                {
+                    id: '12',
+                    name: 'Chun Miao',
+                    title: '<b>department manager</b>'
+                },
+                {
+                    id: '13',
+                    name: 'Yu Tie',
+                    title: 'department manager'
+                }
+            ]
+        };
+
+        $('#chart-container').orgchart({
+            data: datascource,                //【json or String】：利用数据源构建了组织结构图的结构。它可以是json对象或包含发送ajax请求的URL的字符串。
+            exportButton: true,               //【boolean 默:false】：是否启用OrgChar的导出按钮
+            toggleSiblingsResp: true,         //【boolean 默:false】：启用此选项后，用户可以通过单击左/右箭头分别显示/隐藏左/右同级节点。
+            //pan: false,                       //【boolean 默:false】：如果启用此选项，用户可以通过鼠标拖放来平移组织结构图。
+            //zoom: false,                      //【boolean 默:false】：如果用户启用此选项，可以通过鼠标滚轮放大/缩小组织结构图。
+            //zoominLimit: 7,                   //【number 默:7】：用户可以设置缩放限制。
+            //zoomoutLimit: 0.5,                //【number 默:0.5】：用户可以设置缩放限制。
+            //visibleLevel: 999,                //【number 默:999】：它指示组织结构图开始扩展到的级别。
+            //verticalLevel: 1,                 //【integer(>=2)】：用户可以使用此选项将节点从指定的级别垂直对齐。
+            direction: 'l2r',                 //【String 默:t2b】：可用的值是t2b(表示“从上到下”，这是默认值)、b2t(表示“从下到上”)、l2r(表示“从左到右”)、r2l(表示“从右到左”)。
+            exportFilename: 'Orgchart',       //【String 默:Orgchart】：当您将当前的组织结构图导出为图片时，它是文件名。
+            exportFileextension: 'png',       //【String 默:png】：可用的值是png和pdf。
+            nodeId: 'id',                     //【String 默:id】：它将datasource的一个属性设置为每个orgchart节点的唯一标识符。
+            nodeTitle: 'name',                //【String 默:name】：它将数据源的一个属性设置为orgchart节点标题部分的文本内容。实际上，用户可以使用nodeTitle选项创建一个简单的orghcart。
+            nodeContent: 'title',             //【String】：它将数据源的一个属性设置为orgchart节点内容部分的文本内容。
+            //parentNodeSymbol: 'fa-users',     //【String 默:fa-users】：使用字体图标表示节点有子节点。
+            //chartClass: '',                   //【String】：当您想在一个页面上实例化多个orgcharts时，您应该向它们添加不同的类名，以便区分它们。
+            //draggable: false,                 //【boolean 默:false】：如果启用此选项，用户可以拖放orgchart的节点。**注意**:由于IE对HTML5拖放API的支持较差，该特性在IE上无法工作。
+            //【function】：它是一个回调函数，用于自定义每个orgchart节点。接收两个参数:“$node”表示单节点div的jquery对象;“data”表示单个节点的数据源。
+            createNode: function ($node, data) {
+                <!-- var secondMenuIcon = $('<i>', { -->
+                    <!-- 'class': 'fa fa-info-circle second-menu-icon', -->
+                    <!-- click: function () { -->
+                        <!-- $(this).siblings('.second-menu').toggle(); -->
+                    <!-- } -->
+                <!-- }); -->
+
+                <!-- var secondMenu = '<div class="second-menu"><img class="avatar" src="../img/' + data.id + '.jpg"></div>'; -->
+                <!-- $node.append(secondMenuIcon).append(secondMenu); -->
+            },
+            //ajaxURL: {},                      //【json】：它包含四个属性——parent、children、sibling、families(请求父节点和兄弟节点)。正如它们的名称所暗示的，不同的propety提供了用于发送不同节点的ajax请求的URL。
+            //nodeTemplate: function () { },    //【function】：它是一个模板生成函数，用于定制任何复杂的节点内部结构。它只接收一个参数:“data”代表json数据源，用于呈现一个节点。
+            //dropCriteria: function () { },    //【function】：用户可以构造自己的标准来限制拖放节点和拖放区域之间的关系。此外，该函数接受三个参数(draggedNode、dragZone、dropZone)，并且只返回非布尔值。
+            //initCompleted: function () { },   //【function】：了解表何时完全初始化、数据何时加载和呈现，特别是在使用ajax数据源时，这通常很有用。它接收一个参数:“$chart”代表初始化图表的jquery对象。
+        });
+
+        //var datascource = {
+        //    id: 'rootNode',           // 它是一个可选属性，将用作node的id属性和data-parent属性，该属性包含父节点的id
+        //    collapsed: true,          // 默认情况下，当前节点的子节点是隐藏的。
+        //    className: 'top-level',   // 它是一个可选属性，将用作node的className属性。
+        //    /*
+        //     * 注意:当您激活随需应变加载节点特性时，您应该使用json数据源(本地或远程)并设置此属性。
+        //     * 此属性表示此节点是否具有父节点、兄弟节点或子节点，由三个“0/1”标识符组成的字符串。
+        //     * 第一个字符表示当前节点是否有父节点;
+        //     * 第二个字符表示当前节点是否有兄弟节点;
+        //     * 第三个字符表示当前节点是否有子节点。
+        //     */
+        //    relationship: "000",
+        //    // 该属性表示嵌套节点。
+        //    children: [
+        //        { 'nodeTitlePro': 'Bo Miao', 'nodeContentPro': 'department manager', 'relationship': '110' },
+        //        {
+        //            'nodeTitlePro': 'Su Miao', 'nodeContentPro': 'department manager', 'relationship': '111',
+        //            'children': [
+        //                { 'nodeTitlePro': 'Tie Hua', 'nodeContentPro': 'senior engineer', 'relationship': '110' },
+        //                { 'nodeTitlePro': 'Hei Hei', 'nodeContentPro': 'senior engineer', 'relationship': '110' }
+        //            ]
+        //        }
+        //    ]
+        //};
+
+    </script>
+</body>
+</html>
